@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#eaeaec] text-black flex flex-col pb-12 dark:bg-[#2b2b2b] overflow-hidden">
 
-      <header className="bg-white py-6 shadow-sm w-full mb-24">
+      <header className="bg-white py-6 shadow-sm w-full mb-16 md:mb-24">
         <nav className="flex justify-center gap-6 md:gap-16 font-medium text-gray-800 text-[clamp(0.8rem,2vw,1rem)] tracking-wide font-montserrat">
           {navigationLinks.map((link, index) => (
             <Link key={index} href={link.href} className="hover:text-black hover:-translate-y-0.5 transition-transform">{link.label}</Link>
