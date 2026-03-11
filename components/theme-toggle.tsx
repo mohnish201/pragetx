@@ -1,28 +1,33 @@
+'use client'
+
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const ThemeToggle = () => {
 
-    const { setTheme, theme } = useTheme();
+    const { setTheme, resolvedTheme } = useTheme();
+
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add(theme === 'dark' ? 'dark' : 'light');
-    }, [theme]);
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     return (
         <div
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             className="relative border border-gray-400 dark:border-black/30 rounded-full w-20 md:w-24 py-1 flex justify-between items-center px-[3px] bg-white dark:bg-black/20 backdrop-blur-md shadow-sm cursor-pointer"
         >
             <div
                 className={`absolute top-[3px] h-[calc(100%-6px)] w-[calc(50%-3px)] rounded-full transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white dark:bg-white/10 shadow-md
-            ${theme !== 'dark' ? 'translate-x-0' : 'translate-x-[calc(100%+2px)]'}`}
+            ${resolvedTheme !== 'dark' ? 'translate-x-0' : 'translate-x-[calc(100%+2px)]'}`}
             />
 
             <div
                 className={`relative z-10 p-1 bg-linear-to-tr from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white shadow-sm border border-orange-200 transition-all duration-300
-            ${theme !== 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}`}
+            ${resolvedTheme !== 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}`}
             >
                 <svg className="md:w-6 md:h-6 w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path fillRule="evenodd" d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z" clipRule="evenodd" />
@@ -31,7 +36,7 @@ export const ThemeToggle = () => {
 
             <div
                 className={`relative z-10 p-1 bg-linear-to-tr from-blue-900 from-50% to-black rounded-full flex items-center justify-center text-white shadow-sm transition-all duration-300
-            ${theme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}`}
+            ${resolvedTheme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}`}
             >
                 <svg className="md:w-6 md:h-6 w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path fillRule="evenodd" d="M17 4c.5523 0 1 .44772 1 1v2h2c.5523 0 1 .44771 1 1 0 .55228-.4477 1-1 1h-2v2c0 .5523-.4477 1-1 1s-1-.4477-1-1V9h-2c-.5523 0-1-.44772-1-1s.4477-1 1-1h2V5c0-.55228.4477-1 1-1Z" clipRule="evenodd" />
