@@ -1,8 +1,14 @@
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 export const ThemeToggle = () => {
 
     const { setTheme, theme } = useTheme();
+
+    useEffect(() => {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add(theme === 'dark' ? 'dark' : 'light');
+    }, [theme]);
 
     return (
         <div
