@@ -1,65 +1,101 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+
+import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+
+const images = [
+  '/assets/image-1.jpg',
+  '/assets/image-2.jpg',
+  '/assets/image-3.jpg',
+  '/assets/image-4.jpg',
+  '/assets/image-5.jpg',
+  '/assets/image-6.jpg',
+]
+
+const navigationLinks = [
+  { href: '#', label: 'Services' },
+  { href: '#', label: 'Stylists' },
+  { href: '#', label: 'Join Our Team' },
+  { href: '#', label: 'Contacts' },
+]
+
+const Home = () => {
+
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-[#eaeaec] text-black flex flex-col pb-12 dark:bg-[#2b2b2b] overflow-hidden">
+
+      <header className="bg-white py-6 shadow-sm w-full mb-24">
+        <nav className="flex justify-center gap-6 md:gap-16 font-medium text-gray-800 text-[clamp(0.8rem,2vw,1rem)] tracking-wide font-montserrat">
+          {navigationLinks.map((link, index) => (
+            <Link key={index} href={link.href} className="hover:text-black hover:-translate-y-0.5 transition-transform">{link.label}</Link>
+          ))}
+        </nav>
+      </header>
+
+      <main className="flex-1 flex flex-col items-center justify-center w-[95%] mx-auto px-6 gap-10">
+
+        <ThemeToggle />
+
+        <h1 className="text-[clamp(1rem,5vw,5rem)] whitespace-nowrap font-normal text-center leading-normal uppercase text-black dark:text-white font-notable select-none">
+          Visuals That Convert <br /> Visitors Into Customers
+        </h1>
+
+        <div className="bg-white px-4 min-w-60 rounded-xl border border-gray-300 relative py-5 overflow-hidden">
+
+          <div className="progress-gradient absolute bottom-0 left-0 h-full w-1/2 z-0"></div>
+
+          <div className="flex items-center justify-between w-full font-bold text-xs md:text-sm lg:text-base gap-16 text-white relative z-10">
+            <p>Design</p>
+            <p>Develop</p>
+            <p>Test</p>
+          </div>
+
+          <Image
+            src="/assets/car.svg"
+            alt="car"
+            width={80}
+            height={40}
+            className="absolute -bottom-6 left-0 car-animation z-20 w-16"
+          />
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+
+        <div className="flex gap-3 md:gap-4 w-full h-[300px] md:h-[500px] lg:h-[700px]" onMouseLeave={() => setHoveredIndex(null)}>
+
+          {images.map((image, index) => {
+            const isHovered = hoveredIndex === index;
+            const isDefaultActive = hoveredIndex === null && index === 0;
+            const flexValue = isHovered || isDefaultActive ? 12 : 1;
+            const reverseIndex = images.length - index - 1;
+
+            return (
+              <div
+                key={index}
+                className="relative rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer transition-[flex] duration-700 ease-in-out"
+                style={{ flex: flexValue + reverseIndex }}
+                onMouseEnter={() => setHoveredIndex(index)}
+              >
+                <Image
+                  src={image}
+                  alt={`image-${index}`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            );
+          })}
         </div>
+
       </main>
+
     </div>
   );
 }
+
+export default Home;
